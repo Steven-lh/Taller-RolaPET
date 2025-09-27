@@ -6,6 +6,7 @@ package vista;
 
 import java.awt.*;
 import javax.swing.*;
+import modelo.Usuario;
 
 /**
  *
@@ -14,13 +15,20 @@ import javax.swing.*;
 public class VentanaUsuario {
 
     private CardLayout tarjetas;
-    private JPanel panel, panelSuperior, panelBienvenida, panelMenu, panelVehiculos;
-    private JButton botonVehiculos, botonProveedores, botonPerfil, botonEventos, botonAmigos, botonAgregarVehiculo;
-    private GridBagConstraints gbcVehiculos;
+    private JPanel panel, panelSuperior, panelBienvenida, panelMenu, panelVehiculos, panelFormulario, panelPerfil, panelProveedores, panelEventos;
+    private JButton botonVehiculos, botonProveedores, botonPerfil, botonEventos, botonAmigos, botonAgregarVehiculo, botonAgregar, botonAgregarForm, botonCancelarForm;
+    private GridBagConstraints gbcVehiculos, gbcNVehiculoForm, gbcPerfil, gbcProveedores, gbcAmigos, gbcEventos;
+    private JTextField textMarca, textModelo;
+    private JLabel lblErrorCampoForm, lblCampoForm, tituloPerfil, tituloVehiculos, tituloProveedores, tituloEventos, tituloAmigos, tituloBienvenida, JLabel, lblNombre, lblEmail, lblRolaPET, lblIdentificacion, lblTelefono;
+    private JComboBox<String> comboVehiculo;
+    private Font titulos;
 
-    JFrame frameUsuario = new JFrame("RolaPET");
+    JFrame frameUsuario = new JFrame("RolaPET - Usuario");
 
-    public VentanaUsuario() {
+    public VentanaUsuario(Usuario usuarioLogueado) {
+
+        //Fuente para todos los titulos de las tarjetas
+        titulos = new Font("Arial", Font.BOLD, 20);
 
         // Ventana usuarios
         frameUsuario.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,20 +37,22 @@ public class VentanaUsuario {
 
         // Panel bienvenida
         panelBienvenida = new JPanel();
-        panelBienvenida.add(new JLabel("Panel de Usuario - RolaPET."));
+        tituloBienvenida = new JLabel("Panel de Usuario - RolaPET.");
+        tituloBienvenida.setFont(titulos);
+        panelBienvenida.add(tituloBienvenida);
         frameUsuario.add(panelBienvenida);
 
         // Panel menú
         panelMenu = new JPanel();
+        botonPerfil = new JButton("Mi perfil");
+        botonAmigos = new JButton("Mis amigos");
         botonVehiculos = new JButton("Mis vehiculos");
         botonProveedores = new JButton("Proveedores");
-        botonAmigos = new JButton("Mis amigos");
-        botonPerfil = new JButton("Mi perfil");
         botonEventos = new JButton("Eventos");
+        panelMenu.add(botonPerfil);
+        panelMenu.add(botonAmigos);
         panelMenu.add(botonVehiculos);
         panelMenu.add(botonProveedores);
-        panelMenu.add(botonAmigos);
-        panelMenu.add(botonPerfil);
         panelMenu.add(botonEventos);
 
         // Panel Superior
@@ -63,33 +73,167 @@ public class VentanaUsuario {
         // Titulo
         gbcVehiculos.gridx = 0;
         gbcVehiculos.gridy = 0;
-        panelVehiculos.add(new JLabel("Mis vehiculos"), gbcVehiculos);
+        tituloVehiculos = new JLabel("Mis vehiculos");
+        tituloVehiculos.setFont(titulos);
+        panelVehiculos.add(tituloVehiculos, gbcVehiculos);
 
         // Texto tipo-marca-modelo-opciones
         gbcVehiculos.gridx = 0;
         gbcVehiculos.gridy = 1;
         panelVehiculos.add(new JLabel("Tipo"), gbcVehiculos);
-        
+
         gbcVehiculos.gridx = 1;
         gbcVehiculos.gridy = 1;
         panelVehiculos.add(new JLabel("Marca"), gbcVehiculos);
-        
+
         gbcVehiculos.gridx = 2;
         gbcVehiculos.gridy = 1;
         panelVehiculos.add(new JLabel("Modelo"), gbcVehiculos);
-        
+
         gbcVehiculos.gridx = 3;
         gbcVehiculos.gridy = 1;
         panelVehiculos.add(new JLabel("Opciones"), gbcVehiculos);
-        
+
         gbcVehiculos.gridx = 0;
         gbcVehiculos.gridy = 2;
+        gbcVehiculos.gridwidth = 4;
         botonAgregarVehiculo = new JButton("Agregar vehiculo");
         panelVehiculos.add(botonAgregarVehiculo, gbcVehiculos);
-        
-        
 
+        // Formulario nuevo vehiculo
+        panelFormulario = new JPanel(new GridBagLayout());
+        gbcNVehiculoForm = new GridBagConstraints();
+        gbcNVehiculoForm.insets = new Insets(5, 5, 5, 5);
+        gbcNVehiculoForm.fill = GridBagConstraints.HORIZONTAL;
+
+        // Tipo vehiculo
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 0;
+        panelFormulario.add(new JLabel("Tipo de vehículo"), gbcNVehiculoForm);
+        gbcNVehiculoForm.gridx = 1;
+        gbcNVehiculoForm.gridy = 0;
+        String[] tiposVehiculo = {"Scooter", "Moto"};
+        comboVehiculo = new JComboBox<>(tiposVehiculo);
+        panelFormulario.add(comboVehiculo, gbcNVehiculoForm);
+
+        // Marca
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 1;
+        panelFormulario.add(new JLabel("Marca"), gbcNVehiculoForm);
+        gbcNVehiculoForm.gridx = 1;
+        gbcNVehiculoForm.gridy = 1;
+        textMarca = new JTextField(10);
+        panelFormulario.add(textMarca, gbcNVehiculoForm);
+
+        // Modelo 
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 2;
+        panelFormulario.add(new JLabel("Modelo"), gbcNVehiculoForm);
+        gbcNVehiculoForm.gridx = 1;
+        gbcNVehiculoForm.gridy = 2;
+        textModelo = new JTextField(10);
+        panelFormulario.add(textModelo, gbcNVehiculoForm);
+
+        // Mensaje de error campo
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 3;
+        gbcNVehiculoForm.gridwidth = 2;
+        lblErrorCampoForm = new JLabel("");
+        lblErrorCampoForm.setForeground(Color.RED);
+        lblErrorCampoForm.setHorizontalAlignment(SwingConstants.CENTER);
+        panelFormulario.add(lblErrorCampoForm, gbcNVehiculoForm);
+
+        // Confirmación vehiculo agregado
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 4;
+        gbcNVehiculoForm.gridwidth = 2;
+        lblCampoForm = new JLabel("");
+        lblCampoForm.setForeground(Color.GREEN);
+        lblCampoForm.setHorizontalAlignment(SwingConstants.CENTER);
+        panelFormulario.add(lblCampoForm, gbcNVehiculoForm);
+
+        // Botón agregar vehiculo en el form
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 5;
+        gbcNVehiculoForm.gridwidth = 2;
+        gbcNVehiculoForm.anchor = GridBagConstraints.CENTER;
+        botonAgregarForm = new JButton("Confirmar");
+        panelFormulario.add(botonAgregarForm, gbcNVehiculoForm);
+
+        // Botón cancelar agregar vehiculo
+        gbcNVehiculoForm.gridx = 0;
+        gbcNVehiculoForm.gridy = 6;
+        gbcNVehiculoForm.gridwidth = 2;
+        gbcNVehiculoForm.anchor = GridBagConstraints.CENTER;
+        botonCancelarForm = new JButton("Cancelar");
+        panelFormulario.add(botonCancelarForm, gbcNVehiculoForm);
+
+        // Tarjeta 'Mi perfil'
+        panelPerfil = new JPanel(new GridBagLayout());
+        gbcPerfil = new GridBagConstraints();
+        gbcPerfil.insets = new Insets(5, 5, 5, 5);
+        gbcPerfil.fill = GridBagConstraints.HORIZONTAL;
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 0;
+        tituloPerfil = new JLabel("Datos personales.");
+        tituloPerfil.setFont(titulos);
+        panelPerfil.add(tituloPerfil, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 1;
+        panelPerfil.add(new JLabel("Nombre completo: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 1;
+        lblNombre = new JLabel(usuarioLogueado.getNombreCompleto());
+        panelPerfil.add(lblNombre, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 2;
+        panelPerfil.add(new JLabel("E-mail: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 2;
+        lblEmail = new JLabel(usuarioLogueado.getEmail());
+        panelPerfil.add(lblEmail, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 3;
+        panelPerfil.add(new JLabel("ID Rola-PET: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 3;
+        lblRolaPET = new JLabel(usuarioLogueado.getId_rola());
+        panelPerfil.add(lblRolaPET, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 4;
+        panelPerfil.add(new JLabel("Número de identificación: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 4;
+        lblIdentificacion = new JLabel(usuarioLogueado.getIdentificacion());
+        panelPerfil.add(lblIdentificacion, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 5;
+        panelPerfil.add(new JLabel("Número de teléfono: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 5;
+        lblTelefono = new JLabel(usuarioLogueado.getNumeroTel());
+        panelPerfil.add(lblTelefono, gbcPerfil);
+
+        // Tarjeta proveedores
+        panelProveedores = new JPanel(new GridBagLayout());
+        gbcProveedores = new GridBagConstraints();
+        gbcProveedores.insets = new Insets(5, 5, 5, 5);
+        gbcProveedores.fill = GridBagConstraints.CENTER;
+
+        tituloProveedores = new JLabel("Proveedores y Servicios.");
+        tituloProveedores.setFont(titulos);
+        panelProveedores.add(tituloProveedores, gbcProveedores);
+
+        panel.add(panelProveedores, "proveedores");
         panel.add(panelVehiculos, "vehiculos");
+        panel.add(panelFormulario, "form-vehiculos");
+        panel.add(panelPerfil, "perfil");
 
         frameUsuario.setLayout(new BorderLayout());
         frameUsuario.add(panelSuperior, BorderLayout.NORTH);
@@ -102,8 +246,36 @@ public class VentanaUsuario {
         return botonVehiculos;
     }
 
+    public void mostrarPerfil() {
+        tarjetas.show(panel, "perfil");
+    }
+
     public void mostrarVehiculos() {
         tarjetas.show(panel, "vehiculos");
+    }
+
+    public void mostrarProveedoresl() {
+        tarjetas.show(panel, "proveedores");
+    }
+
+    public void mostrarEventos() {
+        tarjetas.show(panel, "eventos");
+    }
+
+    public void cancelarAgregar() {
+        tarjetas.show(panel, "vehiculos");
+    }
+
+    public JButton getCancelarAgregar() {
+        return botonCancelarForm;
+    }
+
+    public void mostrarFormVehiculos() {
+        tarjetas.show(panel, "form-vehiculos");
+    }
+
+    public JButton getBotonAgregarForm() {
+        return botonAgregarForm;
     }
 
     public JButton getBotonProveedores() {
@@ -125,9 +297,36 @@ public class VentanaUsuario {
     public JButton getBotonAmigos() {
         return botonAmigos;
     }
-    
-    public JButton getBotonAgregarVehiculo(){
+
+    public JButton getBotonAgregarVehiculo() {
         return botonAgregarVehiculo;
+    }
+
+    public JButton getBotonAgregar() {
+        return botonAgregar;
+    }
+
+    public JTextField getTextMarca() {
+        return textMarca;
+    }
+
+    public JTextField getTextModelo() {
+        return textModelo;
+    }
+
+    public JLabel getLblErrorCampoForm() {
+        return lblErrorCampoForm;
+    }
+
+    public JLabel getLblCampoForm() {
+        return lblCampoForm;
+    }
+
+    public void limpiarCampos() {
+        textMarca.setText("");
+        textModelo.setText("");
+        comboVehiculo.setSelectedIndex(0);
+        lblErrorCampoForm.setText("");
     }
 
 }
