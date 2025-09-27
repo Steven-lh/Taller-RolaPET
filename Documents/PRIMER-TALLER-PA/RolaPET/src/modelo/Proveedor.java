@@ -18,14 +18,28 @@ public abstract class Proveedor extends Persona {
         this.eventos = new ArrayList<>();
     }
 
-    public void agregarItem(Item item) { items.add(item); }
-    public void eliminarItem(Item item) { items.remove(item); }
+    public void agregarItem(Item item) { 
+    	items.add(item); 
+    }
+    public void eliminarItem(Item item) { 
+    	items.remove(item); 
+    }
 
-    public void publicarEvento(Evento e) { eventos.add(e); }
+    public void publicarEvento(Evento e) { 
+    	eventos.add(e); 
+    }
 
-    public List<Item> getItems() { return items; }
-    public List<Evento> getEventos() { return eventos; }
+    public List<Item> getItems() { 
+    	return items; 
+    }
+    public List<Evento> getEventos() { 
+    	return eventos; 
+    }
 
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public String getDireccion() { 
+    	return direccion; 
+    }
+    public void setDireccion(String direccion) { 
+    	this.direccion = direccion; 
+    }
 }

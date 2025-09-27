@@ -5,9 +5,10 @@ package modelo;
  */
 public class Administrador extends Persona {
 
+	/*
+	 * Constructor de Administrador. 
+	 */
     public Administrador(String id, String nombre, String email, String password) {
         super(id, nombre, email, password);
     }
-
-    // Métodos de administración adicionales si se requieren
 }

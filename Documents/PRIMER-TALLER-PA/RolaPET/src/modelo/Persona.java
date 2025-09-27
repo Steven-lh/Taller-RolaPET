@@ -1,14 +1,14 @@
 package modelo;
 
-/**
- * Clase base para cualquier persona en el sistema (Usuario, Proveedor, Administrador).
- */
+/** Clase abstracta que define los datos básicos de cualquier persona del sistema. */
 public abstract class Persona {
+
     protected String id;
     protected String nombre;
     protected String email;
     protected String password;
 
+    /** Constructor que inicializa los datos principales de la persona. */
     public Persona(String id, String nombre, String email, String password) {
         this.id = id;
         this.nombre = nombre;
@@ -16,7 +16,7 @@ public abstract class Persona {
         this.password = password;
     }
 
-    /** Autentica al usuario comparando la contraseña */
+    /** Verifica si la contraseña proporcionada coincide con la registrada. */
     public boolean autenticar(String pw) {
         return password.equals(pw);
     }
