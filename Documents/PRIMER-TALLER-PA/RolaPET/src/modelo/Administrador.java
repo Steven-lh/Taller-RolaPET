@@ -1,16 +1,13 @@
 package modelo;
 
+/**
+ * Representa a un administrador que gestiona el sistema.
+ */
 public class Administrador extends Persona {
-    private int idAdministrador;
 
-    public Administrador(int id, String nombre, String apellido, String correo, String telefono,
-                         int idAdministrador) {
-        super(id, nombre, apellido, correo, telefono);
-        this.idAdministrador = idAdministrador;
+    public Administrador(String id, String nombre, String email, String password) {
+        super(id, nombre, email, password);
     }
 
-    @Override
-    public String obtenerRol() {
-        return "Administrador";
-    }
+    // Métodos de administración adicionales si se requieren
 }

@@ -1,20 +1,36 @@
 package modelo;
 
+/**
+ * Clase base para cualquier persona en el sistema (Usuario, Proveedor, Administrador).
+ */
 public abstract class Persona {
-    protected int id;
+    protected String id;
     protected String nombre;
-    protected String apellido;
-    protected String correo;
-    protected String telefono;
+    protected String email;
+    protected String password;
 
-    public Persona(int id, String nombre, String apellido, String correo, String telefono) {
+    public Persona(String id, String nombre, String email, String password) {
         this.id = id;
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.telefono = telefono;
+        this.email = email;
+        this.password = password;
     }
 
-    public abstract String obtenerRol();
+    /** Autentica al usuario comparando la contraseña */
+    public boolean autenticar(String pw) {
+        return password.equals(pw);
+    }
 
+    // Getters y setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }
