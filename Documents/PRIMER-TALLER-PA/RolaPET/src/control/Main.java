@@ -4,14 +4,17 @@
  */
 package control;
 import vista.VentanaInicio;
-
+import vista.VentanaUsuario;
+        
 /**
  *
  * @author Steven
  */
 public class Main {
     public static void main(String[] args){
-       VentanaInicio vista = new VentanaInicio();
-       ControlVentanaInicio controlVInicio = new ControlVentanaInicio(vista);
+       VentanaInicio vistaInicio = new VentanaInicio();
+       VentanaUsuario vistaUsuario = new VentanaUsuario();
+       ControlVentanaInicio controlVInicio = new ControlVentanaInicio(vistaInicio);
+       ControlVentanaUsuario controlVUsuario = new ControlVentanaUsuario(vistaUsuario);
     }
 }
