@@ -7,6 +7,7 @@ package vista;
 import java.awt.*;
 import javax.swing.*;
 import modelo.Usuario;
+import modelo.ModeloDatos;
 
 /**
  *
@@ -15,17 +16,17 @@ import modelo.Usuario;
 public class VentanaUsuario {
 
     private CardLayout tarjetas;
-    private JPanel panel, panelSuperior, panelBienvenida, panelMenu, panelVehiculos, panelFormulario, panelPerfil, panelProveedores, panelEventos;
-    private JButton botonVehiculos, botonProveedores, botonPerfil, botonEventos, botonAmigos, botonAgregarVehiculo, botonAgregar, botonAgregarForm, botonCancelarForm;
+    private JPanel panel, panelSuperior, panelBienvenida, panelMenu, panelVehiculos, panelFormulario, panelPerfil, panelProveedores, panelEventos, panelAmigos, panelListaAgregables, panelAmigosAgregados;
+    private JButton botonVehiculos, botonProveedores, botonPerfil, botonEventos, botonAmigos, botonAgregarVehiculo, botonAgregar, botonAgregarForm, botonCancelarForm, botonSalir;
     private GridBagConstraints gbcVehiculos, gbcNVehiculoForm, gbcPerfil, gbcProveedores, gbcAmigos, gbcEventos;
     private JTextField textMarca, textModelo;
-    private JLabel lblErrorCampoForm, lblCampoForm, tituloPerfil, tituloVehiculos, tituloProveedores, tituloEventos, tituloAmigos, tituloBienvenida, JLabel, lblNombre, lblEmail, lblRolaPET, lblIdentificacion, lblTelefono;
+    private JLabel lblErrorCampoForm, lblCampoForm, tituloPerfil, tituloVehiculos, tituloProveedores, tituloEventos, tituloAmigos,tituloSugerencias, tituloBienvenida, JLabel, lblNombre, lblEmail, lblRolaPET, lblIdentificacion, lblTelefono;
     private JComboBox<String> comboVehiculo;
     private Font titulos;
 
     JFrame frameUsuario = new JFrame("RolaPET - Usuario");
 
-    public VentanaUsuario(Usuario usuarioLogueado) {
+    public VentanaUsuario(Usuario usuarioLogueado, ModeloDatos modelo) {
 
         //Fuente para todos los titulos de las tarjetas
         titulos = new Font("Arial", Font.BOLD, 20);
@@ -49,11 +50,13 @@ public class VentanaUsuario {
         botonVehiculos = new JButton("Mis vehiculos");
         botonProveedores = new JButton("Proveedores");
         botonEventos = new JButton("Eventos");
+        botonSalir = new JButton("Salir");
         panelMenu.add(botonPerfil);
         panelMenu.add(botonAmigos);
         panelMenu.add(botonVehiculos);
         panelMenu.add(botonProveedores);
         panelMenu.add(botonEventos);
+        panelMenu.add(botonSalir);
 
         // Panel Superior
         panelSuperior = new JPanel(new BorderLayout());
@@ -64,6 +67,82 @@ public class VentanaUsuario {
         tarjetas = new CardLayout();
         panel = new JPanel(tarjetas);
 
+        // Tarjeta 'Mi perfil'
+        panelPerfil = new JPanel(new GridBagLayout());
+        gbcPerfil = new GridBagConstraints();
+        gbcPerfil.insets = new Insets(5, 5, 5, 5);
+        gbcPerfil.fill = GridBagConstraints.HORIZONTAL;
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 0;
+        tituloPerfil = new JLabel("Datos personales.");
+        tituloPerfil.setFont(titulos);
+        panelPerfil.add(tituloPerfil, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 1;
+        panelPerfil.add(new JLabel("Nombre completo: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 1;
+        lblNombre = new JLabel(usuarioLogueado.getNombreCompleto());
+        panelPerfil.add(lblNombre, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 2;
+        panelPerfil.add(new JLabel("E-mail: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 2;
+        lblEmail = new JLabel(usuarioLogueado.getEmail());
+        panelPerfil.add(lblEmail, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 3;
+        panelPerfil.add(new JLabel("ID Rola-PET: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 3;
+        lblRolaPET = new JLabel(usuarioLogueado.getId_rola());
+        panelPerfil.add(lblRolaPET, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 4;
+        panelPerfil.add(new JLabel("Número de identificación: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 4;
+        lblIdentificacion = new JLabel(usuarioLogueado.getIdentificacion());
+        panelPerfil.add(lblIdentificacion, gbcPerfil);
+
+        gbcPerfil.gridx = 0;
+        gbcPerfil.gridy = 5;
+        panelPerfil.add(new JLabel("Número de teléfono: "), gbcPerfil);
+        gbcPerfil.gridx = 1;
+        gbcPerfil.gridy = 5;
+        lblTelefono = new JLabel(usuarioLogueado.getNumeroTel());
+        panelPerfil.add(lblTelefono, gbcPerfil);
+        
+        // Tarjeta 'Mis amigos'
+        panelAmigos = new JPanel(new BorderLayout());
+        gbcAmigos = new GridBagConstraints();
+        gbcAmigos.insets = new Insets(5, 5, 5, 5);
+        gbcAmigos.fill = GridBagConstraints.HORIZONTAL;
+        
+        panelAmigosAgregados = new JPanel(new BorderLayout());
+        gbcAmigos.gridx = 0; gbcAmigos.gridy = 0;
+        tituloAmigos = new JLabel("Mis amigos.");
+        tituloAmigos.setFont(titulos);
+        panelAmigosAgregados.add(tituloAmigos, BorderLayout.NORTH);
+        
+        panelListaAgregables = new JPanel(new BorderLayout());
+        gbcAmigos.gridx = 0; gbcAmigos.gridy = 0;
+        tituloSugerencias = new JLabel("Sugerencias de amistad.");
+        tituloSugerencias.setFont(titulos);
+        panelListaAgregables.add(tituloSugerencias, BorderLayout.NORTH );
+        
+        JSplitPane panelDividido = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelAmigosAgregados, panelListaAgregables);
+        panelDividido.setDividerLocation(350);
+        panelDividido.setEnabled(false); 
+        
+        panelAmigos.add(panelDividido, BorderLayout.CENTER);
+        
         //  Tarjeta 'Mis vehiculos'
         panelVehiculos = new JPanel(new GridBagLayout());
         gbcVehiculos = new GridBagConstraints();
@@ -168,58 +247,6 @@ public class VentanaUsuario {
         botonCancelarForm = new JButton("Cancelar");
         panelFormulario.add(botonCancelarForm, gbcNVehiculoForm);
 
-        // Tarjeta 'Mi perfil'
-        panelPerfil = new JPanel(new GridBagLayout());
-        gbcPerfil = new GridBagConstraints();
-        gbcPerfil.insets = new Insets(5, 5, 5, 5);
-        gbcPerfil.fill = GridBagConstraints.HORIZONTAL;
-
-        gbcPerfil.gridx = 0;
-        gbcPerfil.gridy = 0;
-        tituloPerfil = new JLabel("Datos personales.");
-        tituloPerfil.setFont(titulos);
-        panelPerfil.add(tituloPerfil, gbcPerfil);
-
-        gbcPerfil.gridx = 0;
-        gbcPerfil.gridy = 1;
-        panelPerfil.add(new JLabel("Nombre completo: "), gbcPerfil);
-        gbcPerfil.gridx = 1;
-        gbcPerfil.gridy = 1;
-        lblNombre = new JLabel(usuarioLogueado.getNombreCompleto());
-        panelPerfil.add(lblNombre, gbcPerfil);
-
-        gbcPerfil.gridx = 0;
-        gbcPerfil.gridy = 2;
-        panelPerfil.add(new JLabel("E-mail: "), gbcPerfil);
-        gbcPerfil.gridx = 1;
-        gbcPerfil.gridy = 2;
-        lblEmail = new JLabel(usuarioLogueado.getEmail());
-        panelPerfil.add(lblEmail, gbcPerfil);
-
-        gbcPerfil.gridx = 0;
-        gbcPerfil.gridy = 3;
-        panelPerfil.add(new JLabel("ID Rola-PET: "), gbcPerfil);
-        gbcPerfil.gridx = 1;
-        gbcPerfil.gridy = 3;
-        lblRolaPET = new JLabel(usuarioLogueado.getId_rola());
-        panelPerfil.add(lblRolaPET, gbcPerfil);
-
-        gbcPerfil.gridx = 0;
-        gbcPerfil.gridy = 4;
-        panelPerfil.add(new JLabel("Número de identificación: "), gbcPerfil);
-        gbcPerfil.gridx = 1;
-        gbcPerfil.gridy = 4;
-        lblIdentificacion = new JLabel(usuarioLogueado.getIdentificacion());
-        panelPerfil.add(lblIdentificacion, gbcPerfil);
-
-        gbcPerfil.gridx = 0;
-        gbcPerfil.gridy = 5;
-        panelPerfil.add(new JLabel("Número de teléfono: "), gbcPerfil);
-        gbcPerfil.gridx = 1;
-        gbcPerfil.gridy = 5;
-        lblTelefono = new JLabel(usuarioLogueado.getNumeroTel());
-        panelPerfil.add(lblTelefono, gbcPerfil);
-
         // Tarjeta proveedores
         panelProveedores = new JPanel(new GridBagLayout());
         gbcProveedores = new GridBagConstraints();
@@ -234,6 +261,7 @@ public class VentanaUsuario {
         panel.add(panelVehiculos, "vehiculos");
         panel.add(panelFormulario, "form-vehiculos");
         panel.add(panelPerfil, "perfil");
+        panel.add(panelAmigos, "amigos");
 
         frameUsuario.setLayout(new BorderLayout());
         frameUsuario.add(panelSuperior, BorderLayout.NORTH);
@@ -261,9 +289,17 @@ public class VentanaUsuario {
     public void mostrarEventos() {
         tarjetas.show(panel, "eventos");
     }
+    
+    public void mostrarAmigos(){
+        tarjetas.show(panel, "amigos");
+    }
 
     public void cancelarAgregar() {
         tarjetas.show(panel, "vehiculos");
+    }
+
+    public void cerrarVentana() {
+        frameUsuario.dispose();
     }
 
     public JButton getCancelarAgregar() {
@@ -320,6 +356,10 @@ public class VentanaUsuario {
 
     public JLabel getLblCampoForm() {
         return lblCampoForm;
+    }
+
+    public JButton getBotonSalir() {
+        return botonSalir;
     }
 
     public void limpiarCampos() {
