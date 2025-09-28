@@ -1,0 +1,34 @@
+Taller No 1 - RolaPETApp
+Archivo: versionamiento.txt
+
+1. Estrategia de Ramas
+- Se creó una rama principal: master
+- Se creó una rama llamada: Cambios1
+
+2. Asignación de Componentes
+- Steven Londoño: Componentes de la vista (Ventana de inicio(login/registro), Ventana de usuarios/proveedores/administradores y sus respectivos controles para los listeners y eventos ,además, trabajé el tema de validación de usuarios, inicios de sesión para todos los tipos de usuario, instanciación completa en la clase main). 
+
+3. Flujo de trabajo en Git
+- Cada integrante clonó el repositorio en su equipo.
+- Se creó una rama con el comando:
+      git checkout -b cambios1
+- Los cambios se subieron con:
+      git add .
+      git commit -m "mensaje"
+      git push origin cambios1
+- Se hizo uso de pull y rebase para unir versiones.
+
+4. Evidencias de Commits
+Ejemplos de commits registrados:
+- Steven: "Creacion del proyecto RolaPET"
+-"Completada ventana inicio con verificación." (fueron varios commits pero no cambié el mensaje)
+-"Ventana del formulario para agregar vehiculo y ventana de usuario."
+-"Creacion ventanas proveedor y admin, además de la verificación de campos."
+-"Creacion correcta de usuario y verificación de campos."
+-"Creación correcta proveedores y usuarios, ventanas funcionales por cada persona."
+-"las 3 ventanas funcionan correctamente con su respectiva verificación de tipo usuario"
+-"Add integrantes list for Taller No 1 (Rola PET)"
+-"Create url_github.txt with project repository link"
+
+5. URL del repositorio
+https://github.com/Steven-lh/Taller-RolaPET.git
