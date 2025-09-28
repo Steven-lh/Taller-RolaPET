@@ -4,7 +4,7 @@ import modelo.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Servicio para gestionar el registro y administración de usuarios. */
+// Servicio para gestionar el registro y administración de usuarios.
 public class GestorUsuarios {
 
     private final List<Usuario> usuarios = new ArrayList<>();
@@ -14,12 +14,12 @@ public class GestorUsuarios {
         usuarios.add(usuario);
     }
 
-    /** Elimina un usuario según su identificador. */
+    // Elimina un usuario según su identificador. 
     public void eliminar(String id) {
         usuarios.removeIf(u -> u.getId().equals(id));
     }
 
-    /** Busca un usuario por su identificador. */
+    //Busca un usuario por su identificador. 
     public Usuario buscarPorId(String id) {
         return usuarios.stream()
                        .filter(u -> u.getId().equals(id))
@@ -27,12 +27,12 @@ public class GestorUsuarios {
                        .orElse(null);
     }
 
-    /** Devuelve una lista con todos los usuarios registrados. */
+    // Devuelve una lista con todos los usuarios registrados
     public List<Usuario> listar() {
         return new ArrayList<>(usuarios);
     }
     
-    /** Actualiza los datos de un usuario existente. */
+    // Actualiza los datos de un usuario existente.
     public void actualizarUsuario(Usuario datos) {
         for (Usuario u : usuarios) {
             if (u.getId().equals(datos.getId())) {

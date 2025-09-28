@@ -8,7 +8,7 @@ public class Administrador extends Persona {
 	/*
 	 * Constructor de Administrador. 
 	 */
-    public Administrador(String id, String nombre, String email, String password) {
-        super(id, nombre, email, password);
+    public Administrador(String id, String nombreCompleto, String email, String password) {
+        super(id, nombreCompleto, email, password);
     }
 }

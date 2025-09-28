@@ -3,16 +3,16 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase base para todos los proveedores (servicios o insumos).
- */
+
+// Clase base para todos los proveedores (servicios o insumos).
+ 
 public abstract class Proveedor extends Persona {
     protected String direccion;
     protected List<Item> items;
     protected List<Evento> eventos;
 
-    public Proveedor(String id, String nombre, String email, String password, String direccion) {
-        super(id, nombre, email, password);
+    public Proveedor(String id, String nombreCompleto, String email, String password, String direccion) {
+        super(id, nombreCompleto, email, password);
         this.direccion = direccion;
         this.items = new ArrayList<>();
         this.eventos = new ArrayList<>();

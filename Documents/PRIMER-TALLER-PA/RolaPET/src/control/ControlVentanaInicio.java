@@ -3,91 +3,118 @@ package control;
 import vista.VentanaInicio;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import modelo.ModeloDatos; // Importar el modelo
-import modelo.Usuario; // Importar la clase Usuario
+import modelo.ModeloDatos;
+import modelo.Usuario;
 import vista.VentanaAdmin;
-import control.ControlVentanaAdmin;
+import vista.VentanaUsuario;
+import vista.VentanaProveedores;
 
 public class ControlVentanaInicio implements ActionListener {
 
-    private VentanaInicio vistaSesion;
-    private ModeloDatos modelo; // Referencia al modelo de datos
+    private VentanaInicio vistaInicio;
+    private ModeloDatos modelo;
 
-    // El constructor ahora recibe el modelo
-    public ControlVentanaInicio(VentanaInicio vistaSesion, ModeloDatos modelo) {
-        this.vistaSesion = vistaSesion;
-        this.modelo = modelo; // Guardar la instancia del modelo
-        this.vistaSesion.getBotonLogin().addActionListener(this);
-        this.vistaSesion.getBotonRegistro().addActionListener(this);
-        this.vistaSesion.getBotonCrear().addActionListener(this);
-        this.vistaSesion.getBotonIngresar().addActionListener(this);
+    public ControlVentanaInicio(VentanaInicio vistaInicio, ModeloDatos modelo) {
+        this.vistaInicio = vistaInicio;
+        this.modelo = modelo;
+        this.vistaInicio.getBotonLogin().addActionListener(this);
+        this.vistaInicio.getBotonRegistro().addActionListener(this);
+        this.vistaInicio.getBotonCrear().addActionListener(this);
+        this.vistaInicio.getBotonIngresar().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == vistaSesion.getBotonIngresar()) {
-            String usuario = vistaSesion.getTextoLUsuario().getText();
-            String pass = new String(vistaSesion.getTextoLContraseña().getPassword());
+        Object source = e.getSource();
+
+        if (source == vistaInicio.getBotonIngresar()) {
+            String usuario = vistaInicio.getTextoLUsuario().getText();
+            String pass = new String(vistaInicio.getTextoLContraseña().getPassword());
+
             if (usuario.equals("admin") && pass.equals("admin123")) {
-                vistaSesion.cerrarVentana();
+                vistaInicio.cerrarVentana();
+                vistaInicio.getLblErrorPassUser().setText("");
                 VentanaAdmin vistaAdmin = new VentanaAdmin();
-                // Al crear el controlador del admin, le pasamos el MISMO modelo
-                new ControlVentanaAdmin(vistaAdmin, vistaSesion, this.modelo);
+                new ControlVentanaAdmin(vistaAdmin, vistaInicio, this.modelo);
                 vistaAdmin.mostrarVentana();
             } else {
-                vistaSesion.getLblErrorPassUser().setText("El usuario o la contraseña no son correctas.");
+                Usuario usuarioLogueado = modelo.validarLoginUsuario(usuario, pass);
+                if (usuarioLogueado != null) {
+
+                    vistaInicio.ocultarVentana();
+                    vistaInicio.getLblErrorPassUser().setText("");
+
+                    if ("proveedor".equals(usuarioLogueado.getTipoUsuario())) {
+ 
+                        VentanaProveedores vistaProveedor = new VentanaProveedores();
+                        new ControlVentanaProveedores(vistaProveedor, vistaInicio);
+
+                    } else {
+                        VentanaUsuario vistaUsuario = new VentanaUsuario(usuarioLogueado, modelo);
+                        new ControlVentanaUsuario(vistaUsuario, vistaInicio, modelo, usuarioLogueado);
+                    }
+
+                } else {
+                    vistaInicio.getLblErrorPassUser().setText("Usuario o contraseña incorrectos.");
+                }
             }
-        }
-
-        if (e.getSource() == vistaSesion.getBotonLogin()) {
-            vistaSesion.mostrarLogin();
-        } else if (e.getSource() == vistaSesion.getBotonRegistro()) {
-            vistaSesion.mostrarRegistro();
-        } else if (e.getSource() == vistaSesion.getBotonCrear()) {
-            // Tu validación de campos vacíos
-            if (vistaSesion.getTextoRNombre().getText().trim().isEmpty()
-                    // ... (el resto de tu validación de campos vacíos va aquí)
-                    || vistaSesion.getTextoRModelo().getText().trim().isEmpty()) {
-
-                vistaSesion.getLblErrorCampo().setText("Todos los campos deben estar llenos.");
-                return;
-            }
-            if (!validarRegistro()) {
-                return; 
-            }
-            
-            String nombre = vistaSesion.getTextoRNombre().getText();
-            String email = vistaSesion.getTextoREmail().getText();
-            String id = vistaSesion.getTextoRIdentificacion().getText();
-            String tel = vistaSesion.getTextoRNumeroTel().getText();
-            String rolaPET = vistaSesion.getTextoRRolaPET().getText();
-            String user = vistaSesion.getTextoRUsuario().getText();
-            String password = new String(vistaSesion.getTextoRContraseña().getPassword());
-            String tipoVehiculo = (String) vistaSesion.getComboVehiculo().getSelectedItem();
-            String marca = vistaSesion.getTextoRMarca().getText();
-            String modeloVehiculo = vistaSesion.getTextoRModelo().getText();
-            
-
-            Usuario nuevoUsuario = new Usuario(nombre, email, id, tel, rolaPET, user, password, tipoVehiculo, marca, modeloVehiculo);
-
-            modelo.agregarSolicitudDeRegistro(nuevoUsuario);
-
-            vistaSesion.getLblErrorCampo().setText("");
-            vistaSesion.getLblError().setText("");
-            vistaSesion.getLblCampoConf().setText("Registro exitoso, solicitud enviada.");
+        } else if (source == vistaInicio.getBotonLogin()) {
+            vistaInicio.mostrarLogin();
+        } else if (source == vistaInicio.getBotonRegistro()) {
+            vistaInicio.mostrarRegistro();
+        } else if (source == vistaInicio.getBotonCrear()) {
+            manejarCreacionUsuarios();
         }
     }
 
-    private boolean validarRegistro() {
-        String pass = new String(vistaSesion.getTextoRContraseña().getPassword());
-        String confirm = new String(vistaSesion.getTextoRConfirmar().getPassword());
+    private void manejarCreacionUsuarios() {
+        if (validarCamposVacios() || !validarRegistro()) {
+            return;
+        }
+        String nombre = vistaInicio.getTextoRNombre().getText();
+        String email = vistaInicio.getTextoREmail().getText();
+        String id = vistaInicio.getTextoRIdentificacion().getText();
+        String tel = vistaInicio.getTextoRNumeroTel().getText();
+        String rolaPET = vistaInicio.getTextoRRolaPET().getText();
+        String user = vistaInicio.getTextoRUsuario().getText();
+        String password = new String(vistaInicio.getTextoRContraseña().getPassword());
+        String tipoVehiculo = (String) vistaInicio.getComboVehiculo().getSelectedItem();
+        String marca = vistaInicio.getTextoRMarca().getText();
+        String modeloVehiculo = vistaInicio.getTextoRModelo().getText();
+        String tipoUsuario;
 
+        if (user.startsWith("p-")) {
+            tipoUsuario = "proveedor";
+        } else {
+            tipoUsuario = "estandar";
+        }
+        Usuario nuevoUsuario = new Usuario(id, nombre, email, password, tel, rolaPET, user, tipoVehiculo, marca, modeloVehiculo, tipoUsuario);
+        modelo.agregarSolicitudDeRegistro(nuevoUsuario);
+        vistaInicio.getLblErrorCampo().setText("");
+        vistaInicio.getLblError().setText("");
+        vistaInicio.getLblCampoConf().setText("Registro exitoso, solicitud enviada.");
+    }
+
+    private boolean validarRegistro() {
+        String pass = new String(vistaInicio.getTextoRContraseña().getPassword());
+        String confirm = new String(vistaInicio.getTextoRConfirmar().getPassword());
         if (!pass.equals(confirm)) {
-            vistaSesion.getLblError().setText("Las contraseñas no coinciden.");
+            vistaInicio.getLblError().setText("Las contraseñas no coinciden.");
             return false;
         } else {
-            vistaSesion.getLblError().setText("");
+            vistaInicio.getLblError().setText("");
             return true;
         }
+    }
+
+    private boolean validarCamposVacios() {
+        if (vistaInicio.getTextoRNombre().getText().trim().isEmpty()
+                || vistaInicio.getTextoRUsuario().getText().trim().isEmpty()
+                || new String(vistaInicio.getTextoRContraseña().getPassword()).trim().isEmpty()) {
+            vistaInicio.getLblErrorCampo().setText("Todos los campos obligatorios deben estar llenos.");
+            return true;
+        }
+        vistaInicio.getLblErrorCampo().setText("");
+        return false;
     }
 }

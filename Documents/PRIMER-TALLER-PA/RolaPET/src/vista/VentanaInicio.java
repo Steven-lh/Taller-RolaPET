@@ -13,11 +13,13 @@ import javax.swing.*;
  */
 public class VentanaInicio {
     private CardLayout tarjeta;
-    private JPanel panel;
+    private JPanel panel, panelLogin, panelRegistro;
     private JButton botonLogin, botonRegistro, botonIngresar, botonCrear;
     private JPasswordField textoRContraseña, textoLContraseña, textoRConfirmar;
-    private JTextField textoRUsuario, textoLUsuario, textoRNombre, textoRIdentificacion, textoRNumeroTel, textoRRolaPET, textoRMarca, textoRModelo;
-    private JLabel lblError, lblErrorCampo;
+    private JTextField textoRUsuario, textoLUsuario, textoRNombre, textoRIdentificacion, textoRNumeroTel, textoRRolaPET, textoRMarca, textoRModelo, textoREmail;
+    private JLabel lblError, lblErrorCampo, lblCampoConf, lblErrorPassUser, lblBienvenidaUser;
+    private GridBagConstraints gbcReg, gbcLogin, gbcBotonRegistro, gbcBotonLogin;
+    private JComboBox<String> comboVehiculo;
             
     JFrame frameInicio = new JFrame("RolaPET");
 
@@ -34,7 +36,7 @@ public class VentanaInicio {
     // Botones para seleccionar login o registro
     JPanel botonesInicio = new JPanel(new GridBagLayout());
     // Botón inicio sesión
-    GridBagConstraints gbcBotonLogin = new GridBagConstraints();
+    gbcBotonLogin = new GridBagConstraints();
     gbcBotonLogin.insets = new Insets(5, 5, 5, 5);
     gbcBotonLogin.fill = GridBagConstraints.HORIZONTAL;
     
@@ -45,7 +47,7 @@ public class VentanaInicio {
     botonesInicio.add(botonLogin, gbcBotonLogin);
     
     //Botón registrarse
-    GridBagConstraints gbcBotonRegistro = new GridBagConstraints();
+    gbcBotonRegistro = new GridBagConstraints();
     gbcBotonRegistro.insets = new Insets(5, 5, 5, 5);
     gbcBotonRegistro.fill = GridBagConstraints.HORIZONTAL;
     
@@ -62,11 +64,12 @@ public class VentanaInicio {
     // Creación de los paneles de registro e inicio de sesión
     
     // Panel login
-    JPanel panelLogin = new JPanel(new GridBagLayout());
+    panelLogin = new JPanel(new GridBagLayout());
     
     // Instancia para organizar filas y columnas
-    GridBagConstraints gbcLogin = new GridBagConstraints();
-    gbcLogin.insets = new Insets(5, 5, 5, 5); // margen interno
+    gbcLogin = new GridBagConstraints();
+    // margen interno
+    gbcLogin.insets = new Insets(5, 5, 5, 5); 
     gbcLogin.fill = GridBagConstraints.HORIZONTAL;
 
     // Usuario
@@ -82,18 +85,25 @@ public class VentanaInicio {
     gbcLogin.gridx = 1; gbcLogin.gridy = 1;
     textoLContraseña = new JPasswordField(10);
     panelLogin.add(textoLContraseña, gbcLogin);
-
-    // Botón centrado
+    
+    // Mensaje error contraseña o campo
     gbcLogin.gridx = 0; gbcLogin.gridy = 2;
     gbcLogin.gridwidth = 2;
+    lblErrorPassUser = new JLabel("");
+    lblErrorPassUser.setForeground(Color.RED);
+    lblErrorPassUser.setHorizontalAlignment(SwingConstants.CENTER);
+    panelLogin.add(lblErrorPassUser, gbcLogin);
+
+    // Botón centrado
+    gbcLogin.gridx = 0; gbcLogin.gridy = 4;
     gbcLogin.anchor = GridBagConstraints.CENTER;
     botonIngresar = new JButton("Ingresar");
     panelLogin.add(botonIngresar, gbcLogin);
     
     // Panel registro
-    JPanel panelRegistro = new JPanel(new GridBagLayout());
+    panelRegistro = new JPanel(new GridBagLayout());
     // Instancia para organizar filas y columnas
-    GridBagConstraints gbcReg = new GridBagConstraints();
+    gbcReg = new GridBagConstraints();
     gbcReg.insets = new Insets(5, 5, 5, 5);
     gbcReg.fill = GridBagConstraints.HORIZONTAL;
 
@@ -103,51 +113,59 @@ public class VentanaInicio {
     gbcReg.gridx = 1; gbcReg.gridy = 0;
     textoRNombre = new JTextField(10);
     panelRegistro.add(textoRNombre, gbcReg);
+    
+    // Email
+    gbcReg.gridx = 0; gbcReg.gridy = 1;
+    panelRegistro.add(new JLabel("E-mail"), gbcReg);
+    gbcReg.gridx = 1; gbcReg.gridy = 1;
+    textoREmail = new JTextField(10);
+    panelRegistro.add(textoREmail, gbcReg);
+
 
     // Número identificación
-    gbcReg.gridx = 0; gbcReg.gridy = 1;
+    gbcReg.gridx = 0; gbcReg.gridy = 2;
     panelRegistro.add(new JLabel("Número de identificación"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 1;
+    gbcReg.gridx = 1; gbcReg.gridy = 2;
     textoRIdentificacion = new JTextField(10);
     panelRegistro.add(textoRIdentificacion, gbcReg);
 
      // Número de teléfono
-    gbcReg.gridx = 0; gbcReg.gridy = 2;
+    gbcReg.gridx = 0; gbcReg.gridy = 3;
     panelRegistro.add(new JLabel("Número de teléfono"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 2;
+    gbcReg.gridx = 1; gbcReg.gridy = 3;
     textoRNumeroTel = new JTextField(10);
     panelRegistro.add(textoRNumeroTel, gbcReg);
 
     // Número registro RolaPET
-    gbcReg.gridx = 0; gbcReg.gridy = 3;
+    gbcReg.gridx = 0; gbcReg.gridy = 4;
     panelRegistro.add(new JLabel("Número RolaPET"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 3;
+    gbcReg.gridx = 1; gbcReg.gridy = 4;
     textoRRolaPET   = new JTextField(10);
     panelRegistro.add(textoRRolaPET, gbcReg);
     
      // Usuario
-    gbcReg.gridx = 0; gbcReg.gridy = 4;
+    gbcReg.gridx = 0; gbcReg.gridy = 5;
     panelRegistro.add(new JLabel("Usuario"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 4;
+    gbcReg.gridx = 1; gbcReg.gridy = 5;
     textoRUsuario   = new JTextField(10);
     panelRegistro.add(textoRUsuario, gbcReg);
     
     // Contraseña
-    gbcReg.gridx = 0; gbcReg.gridy = 5;
+    gbcReg.gridx = 0; gbcReg.gridy = 6;
     panelRegistro.add(new JLabel("Contraseña"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 5;
+    gbcReg.gridx = 1; gbcReg.gridy = 6;
     textoRContraseña = new JPasswordField();
     panelRegistro.add(textoRContraseña, gbcReg);
     
     // Contraseña confirmar
-    gbcReg.gridx = 0; gbcReg.gridy = 6;
+    gbcReg.gridx = 0; gbcReg.gridy = 7;
     panelRegistro.add(new JLabel("Confirmar contraseña"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 6;
+    gbcReg.gridx = 1; gbcReg.gridy = 7;
     textoRConfirmar = new JPasswordField(10);
     panelRegistro.add(textoRConfirmar, gbcReg);
     
     // Mensaje de error contraseña
-    gbcReg.gridx = 0; gbcReg.gridy = 7;
+    gbcReg.gridx = 0; gbcReg.gridy = 8;
     gbcReg.gridwidth = 2;
     lblError = new JLabel("");
     lblError.setForeground(Color.RED);
@@ -155,37 +173,45 @@ public class VentanaInicio {
     panelRegistro.add(lblError, gbcReg);
     
     // Tipo vehiculo
-    gbcReg.gridx = 0; gbcReg.gridy = 8;
+    gbcReg.gridx = 0; gbcReg.gridy = 9;
     panelRegistro.add( new JLabel("Tipo de vehículo"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 8;
     String[] tiposVehiculo = {"Scooter", "Moto"};
-    JComboBox<String> comboVehiculo = new JComboBox<>(tiposVehiculo);
+    gbcReg.gridx = 1; gbcReg.gridy = 9;
+    comboVehiculo = new JComboBox<>(tiposVehiculo);
     panelRegistro.add(comboVehiculo, gbcReg);
 
     // Marca
-    gbcReg.gridx = 0; gbcReg.gridy = 9;
+    gbcReg.gridx = 0; gbcReg.gridy = 10;
     panelRegistro.add(new JLabel("Marca"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 9;
+    gbcReg.gridx = 1; gbcReg.gridy = 10;
     textoRMarca = new JTextField(10);
     panelRegistro.add(textoRMarca, gbcReg);
 
     // Modelo 
-    gbcReg.gridx = 0; gbcReg.gridy = 10;
+    gbcReg.gridx = 0; gbcReg.gridy = 11;
     panelRegistro.add(new JLabel("Modelo"), gbcReg);
-    gbcReg.gridx = 1; gbcReg.gridy = 10;
+    gbcReg.gridx = 1; gbcReg.gridy = 11;
     textoRModelo = new JTextField(10);
     panelRegistro.add(textoRModelo, gbcReg);
     
     // Mensaje de error campo
-    gbcReg.gridx = 0; gbcReg.gridy = 11;
+    gbcReg.gridx = 0; gbcReg.gridy = 12;
     gbcReg.gridwidth = 2;
     lblErrorCampo = new JLabel("");
     lblErrorCampo.setForeground(Color.RED);
     lblErrorCampo.setHorizontalAlignment(SwingConstants.CENTER);
     panelRegistro.add(lblErrorCampo, gbcReg);
+        
+    // Confirmación registro
+    gbcReg.gridx = 0; gbcReg.gridy = 12;
+    gbcReg.gridwidth = 2;
+    lblCampoConf = new JLabel("");
+    lblCampoConf.setForeground(Color.GREEN);
+    lblCampoConf.setHorizontalAlignment(SwingConstants.CENTER);
+    panelRegistro.add(lblCampoConf, gbcReg);
 
     // Botón centrado
-    gbcReg.gridx = 0; gbcReg.gridy = 12;
+    gbcReg.gridx = 0; gbcReg.gridy = 13;
     gbcReg.gridwidth = 2;
     gbcReg.anchor = GridBagConstraints.CENTER;
     botonCrear = new JButton("Crear Cuenta");
@@ -208,6 +234,10 @@ public class VentanaInicio {
     panelMitades.setEnabled(false);
         
     frameInicio.setVisible(true);
+    }
+    
+    public void mostrarVentana(){
+        frameInicio.setVisible(true);
     }
     
     public void mostrarLogin() {
@@ -245,6 +275,14 @@ public class VentanaInicio {
     public JLabel getLblErrorCampo(){
         return lblErrorCampo;
     }
+    
+    public JLabel getLblCampoConf(){
+        return lblCampoConf;
+    }
+    
+     public JLabel getLblErrorPassUser(){
+        return lblErrorPassUser;
+    }
 
     public JTextField getTextoRNombre() {
         return textoRNombre;
@@ -272,5 +310,33 @@ public class VentanaInicio {
 
     public JTextField getTextoRModelo() {
         return textoRModelo;
+    }
+    
+    public JButton getBotonIngresar() {
+        return botonIngresar;
+    }
+
+    public JTextField getTextoLUsuario() {
+        return textoLUsuario;
+    }
+
+    public JPasswordField getTextoLContraseña() {
+        return textoLContraseña;
+    }
+    
+    public void ocultarVentana() {
+        frameInicio.setVisible(false);
+    }
+    
+    public void cerrarVentana(){
+        frameInicio.dispose();
+    }
+    
+    public JTextField getTextoREmail() {
+        return textoREmail;
+    }
+
+    public JComboBox<String> getComboVehiculo() {
+        return comboVehiculo;
     }
 }
