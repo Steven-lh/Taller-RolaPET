@@ -7,6 +7,7 @@ Archivo: versionamiento.txt
 
 2. Asignación de Componentes
 - Steven Londoño: Componentes de la vista (Ventana de inicio(login/registro), Ventana de usuarios/proveedores/administradores y sus respectivos controles para los listeners y eventos ,además, trabajé el tema de validación de usuarios, inicios de sesión para todos los tipos de usuario, instanciación completa en la clase main). 
+- Miguel Hernández: Componente del control (Distribución de labores para cada metodo y vinculación con la interfaz y el modelo para permitir la comunicación entre usuario y la maquina, además de la preservación de los datos).
 
 3. Flujo de trabajo en Git
 - Cada integrante clonó el repositorio en su equipo.
